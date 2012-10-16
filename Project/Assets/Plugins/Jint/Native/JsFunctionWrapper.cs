@@ -7,9 +7,9 @@ using Jint.Delegates;
 namespace Jint.Native {
     [Serializable]
     public class JsFunctionWrapper : JsFunction {
-        public Func<JsInstance[], JsInstance> Delegate { get; set; }
+        public Jint.Delegates.Func<JsInstance[], JsInstance> Delegate { get; set; }
 
-        public JsFunctionWrapper(Func<JsInstance[], JsInstance> d, JsObject prototype)
+        public JsFunctionWrapper(Jint.Delegates.Func<JsInstance[], JsInstance> d, JsObject prototype)
             : base(prototype) {
             Delegate = d;
         }

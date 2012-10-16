@@ -23,7 +23,6 @@ namespace Jint.Native {
         Jint.Native.JsErrorConstructor TypeErrorClass { get; }
         Jint.Native.JsErrorConstructor URIErrorClass { get; }
         Jint.Native.JsObject Wrap(object value);
-        Jint.Native.JsObject WrapClr(object value);
 
         JsInstance NaN { get; }
 

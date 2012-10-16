@@ -44,21 +44,21 @@ namespace Jint {
 
             JsObject global = visitor.Global as JsObject;
 
-            global["ToBoolean"] = visitor.Global.FunctionClass.New(new Func<object, Boolean>(Convert.ToBoolean));
-            global["ToByte"] = visitor.Global.FunctionClass.New(new Func<object, Byte>(Convert.ToByte));
-            global["ToChar"] = visitor.Global.FunctionClass.New(new Func<object, Char>(Convert.ToChar));
-            global["ToDateTime"] = visitor.Global.FunctionClass.New(new Func<object, DateTime>(Convert.ToDateTime));
-            global["ToDecimal"] = visitor.Global.FunctionClass.New(new Func<object, Decimal>(Convert.ToDecimal));
-            global["ToDouble"] = visitor.Global.FunctionClass.New(new Func<object, Double>(Convert.ToDouble));
-            global["ToInt16"] = visitor.Global.FunctionClass.New(new Func<object, Int16>(Convert.ToInt16));
-            global["ToInt32"] = visitor.Global.FunctionClass.New(new Func<object, Int32>(Convert.ToInt32));
-            global["ToInt64"] = visitor.Global.FunctionClass.New(new Func<object, Int64>(Convert.ToInt64));
-            global["ToSByte"] = visitor.Global.FunctionClass.New(new Func<object, SByte>(Convert.ToSByte));
-            global["ToSingle"] = visitor.Global.FunctionClass.New(new Func<object, Single>(Convert.ToSingle));
-            global["ToString"] = visitor.Global.FunctionClass.New(new Func<object, String>(Convert.ToString));
-            global["ToUInt16"] = visitor.Global.FunctionClass.New(new Func<object, UInt16>(Convert.ToUInt16));
-            global["ToUInt32"] = visitor.Global.FunctionClass.New(new Func<object, UInt32>(Convert.ToUInt32));
-            global["ToUInt64"] = visitor.Global.FunctionClass.New(new Func<object, UInt64>(Convert.ToUInt64));
+            global["ToBoolean"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Boolean>(Convert.ToBoolean));
+            global["ToByte"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Byte>(Convert.ToByte));
+            global["ToChar"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Char>(Convert.ToChar));
+            global["ToDateTime"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, DateTime>(Convert.ToDateTime));
+            global["ToDecimal"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Decimal>(Convert.ToDecimal));
+            global["ToDouble"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Double>(Convert.ToDouble));
+            global["ToInt16"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Int16>(Convert.ToInt16));
+            global["ToInt32"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Int32>(Convert.ToInt32));
+            global["ToInt64"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Int64>(Convert.ToInt64));
+            global["ToSByte"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, SByte>(Convert.ToSByte));
+            global["ToSingle"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, Single>(Convert.ToSingle));
+            global["ToString"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, String>(Convert.ToString));
+            global["ToUInt16"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, UInt16>(Convert.ToUInt16));
+            global["ToUInt32"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, UInt32>(Convert.ToUInt32));
+            global["ToUInt64"] = visitor.Global.FunctionClass.New(new Jint.Delegates.Func<object, UInt64>(Convert.ToUInt64));
 
             BreakPoints = new List<BreakPoint>();
         }
@@ -221,6 +221,8 @@ namespace Jint {
                 visitor.Step += OnStep;
             }
 
+                visitor.Visit(program);
+/*
             try {
                 visitor.Visit(program);
             }
@@ -275,8 +277,9 @@ namespace Jint {
             finally {
                 visitor.Step -= OnStep;
             }
+*/
 
-            return visitor.Result == null ? null : unwrap ? visitor.Global.Marshaller.MarshalJsValue<object>( visitor.Result) : visitor.Result;
+            return visitor.Result == null ? null : visitor.Result;
         }
 
         #region Debugger
@@ -305,24 +308,13 @@ namespace Jint {
         #region SetParameter overloads
 
         /// <summary>
-        /// Defines an external object to be available inside the script
-        /// </summary>
-        /// <param name="name">Local name of the object duting the execution of the script</param>
-        /// <param name="value">Available object</param>
-        /// <returns>The current JintEngine instance</returns>
-        public JintEngine SetParameter(string name, object value) {
-            visitor.GlobalScope[name] = visitor.Global.WrapClr(value);
-            return this;
-        }
-
-        /// <summary>
         /// Defines an external Double value to be available inside the script
         /// </summary>
         /// <param name="name">Local name of the Double value during the execution of the script</param>
         /// <param name="value">Available Double value</param>
         /// <returns>The current JintEngine instance</returns>
         public JintEngine SetParameter(string name, double value) {
-            visitor.GlobalScope[name] = visitor.Global.WrapClr(value);
+            visitor.GlobalScope[name] = visitor.Global.NumberClass.New(value);
             return this;
         }
 
@@ -333,7 +325,7 @@ namespace Jint {
         /// <param name="value">Available String instance</param>
         /// <returns>The current JintEngine instance</returns>
         public JintEngine SetParameter(string name, string value) {
-            visitor.GlobalScope[name] = visitor.Global.WrapClr(value);
+            visitor.GlobalScope[name] = visitor.Global.StringClass.New(value);
             return this;
         }
 
@@ -344,7 +336,7 @@ namespace Jint {
         /// <param name="value">Available Int32 value</param>
         /// <returns>The current JintEngine instance</returns>
         public JintEngine SetParameter(string name, int value) {
-            visitor.GlobalScope[name] = visitor.Global.WrapClr(value);
+            visitor.GlobalScope[name] = visitor.Global.NumberClass.New(value);
             return this;
         }
 
@@ -355,7 +347,7 @@ namespace Jint {
         /// <param name="value">Available Boolean value</param>
         /// <returns>The current JintEngine instance</returns>
         public JintEngine SetParameter(string name, bool value) {
-            visitor.GlobalScope[name] = visitor.Global.WrapClr(value);
+            visitor.GlobalScope[name] = visitor.Global.BooleanClass.New(value);
             return this;
         }
 
@@ -366,7 +358,7 @@ namespace Jint {
         /// <param name="value">Available DateTime value</param>
         /// <returns>The current JintEngine instance</returns>
         public JintEngine SetParameter(string name, DateTime value) {
-            visitor.GlobalScope[name] = visitor.Global.WrapClr(value);
+            visitor.GlobalScope[name] = visitor.Global.DateClass.New(value);
             return this;
         }
         #endregion
@@ -386,8 +378,41 @@ namespace Jint {
         }
 
         public object CallFunction(JsFunction function, params object[] args) {
-            visitor.ExecuteFunction(function, null, Array.ConvertAll<object,JsInstance>( args, x => visitor.Global.Marshaller.MarshalClrValue<object>(x) ));
-            return visitor.Global.Marshaller.MarshalJsValue<object>(visitor.Returned);
+			visitor.ExecuteFunction(function, null, Array.ConvertAll<object,JsInstance>(args, (x) => {
+				TypeCode t = Type.GetTypeCode(x.GetType());
+				switch (t) {
+				case TypeCode.Boolean:
+					return visitor.Global.BooleanClass.New((bool)x);
+
+				case TypeCode.Char:
+				case TypeCode.String:
+				case TypeCode.Object:
+					return visitor.Global.StringClass.New(x.ToString());
+
+				case TypeCode.DateTime:
+					return visitor.Global.DateClass.New((DateTime)x);
+
+				case TypeCode.Byte:
+				case TypeCode.Int16:
+				case TypeCode.Int32:
+				case TypeCode.Int64:
+				case TypeCode.SByte:
+				case TypeCode.UInt16:
+				case TypeCode.UInt32:
+				case TypeCode.UInt64:
+				case TypeCode.Decimal:
+				case TypeCode.Double:
+				case TypeCode.Single:
+					return visitor.Global.NumberClass.New(
+						Convert.ToDouble(x));
+
+				case TypeCode.DBNull:
+				case TypeCode.Empty:
+					return JsNull.Instance;
+				}
+				throw new NotSupportedException();
+			}));
+            return visitor.Returned;
         }
 
         public JintEngine SetFunction(string name, Delegate function) {

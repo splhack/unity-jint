@@ -21,21 +21,21 @@ namespace Jint.Native {
             this.hasParameters = hasParameters;
         }
 
-        public ClrImplDefinition(Func<T, JsInstance[], JsInstance> impl, JsObject prototype)
+        public ClrImplDefinition(Jint.Delegates.Func<T, JsInstance[], JsInstance> impl, JsObject prototype)
             : this(impl, -1, prototype) {
         }
 
-        public ClrImplDefinition(Func<T, JsInstance[], JsInstance> impl, int length, JsObject prototype)
+        public ClrImplDefinition(Jint.Delegates.Func<T, JsInstance[], JsInstance> impl, int length, JsObject prototype)
             : this(true, prototype) {
             this.impl = impl;
             this.length = length;
         }
 
-        public ClrImplDefinition(Func<T, JsInstance> impl, JsObject prototype)
+        public ClrImplDefinition(Jint.Delegates.Func<T, JsInstance> impl, JsObject prototype)
             : this(impl, -1, prototype) {
         }
 
-        public ClrImplDefinition(Func<T, JsInstance> impl, int length, JsObject prototype)
+        public ClrImplDefinition(Jint.Delegates.Func<T, JsInstance> impl, int length, JsObject prototype)
             : this(false, prototype) {
             this.impl = impl;
             this.length = length;

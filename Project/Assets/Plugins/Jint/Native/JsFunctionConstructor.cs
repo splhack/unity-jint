@@ -58,26 +58,26 @@ namespace Jint.Native {
             return function;
         }
 
-        public JsFunction New<T>(Func<T, JsInstance> impl) where T : JsInstance {
+        public JsFunction New<T>(Jint.Delegates.Func<T, JsInstance> impl) where T : JsInstance {
             JsFunction function = new ClrImplDefinition<T>(impl, PrototypeProperty);
             function.PrototypeProperty = Global.ObjectClass.New(function);
             //function.Scope = new JsScope(PrototypeProperty);
             return function;
         }
-        public JsFunction New<T>(Func<T, JsInstance> impl, int length) where T : JsInstance {
+        public JsFunction New<T>(Jint.Delegates.Func<T, JsInstance> impl, int length) where T : JsInstance {
             JsFunction function = new ClrImplDefinition<T>(impl, length, PrototypeProperty);
             function.PrototypeProperty = Global.ObjectClass.New(function);
             //function.Scope = new JsScope(PrototypeProperty);
             return function;
         }
 
-        public JsFunction New<T>(Func<T, JsInstance[], JsInstance> impl) where T : JsInstance {
+        public JsFunction New<T>(Jint.Delegates.Func<T, JsInstance[], JsInstance> impl) where T : JsInstance {
             JsFunction function = new ClrImplDefinition<T>(impl, PrototypeProperty);
             function.PrototypeProperty = Global.ObjectClass.New(function);
             //function.Scope = new JsScope(PrototypeProperty);
             return function;
         }
-        public JsFunction New<T>(Func<T, JsInstance[], JsInstance> impl, int length) where T : JsInstance {
+        public JsFunction New<T>(Jint.Delegates.Func<T, JsInstance[], JsInstance> impl, int length) where T : JsInstance {
             JsFunction function = new ClrImplDefinition<T>(impl, length, PrototypeProperty);
             function.PrototypeProperty = Global.ObjectClass.New(function);
             //function.Scope = new JsScope(PrototypeProperty);

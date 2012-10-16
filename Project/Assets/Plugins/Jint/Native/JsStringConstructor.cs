@@ -87,15 +87,15 @@ namespace Jint.Native {
         /// <returns></returns>
         private static string EvaluateReplacePattern(string matched, string before, string after, string newString, GroupCollection groups) {
             if (newString.Contains("$")) {
-                Regex rr = new Regex(@"\$\$|\$&|\$`|\$'|\$\d{1,2}", RegexOptions.Compiled);
+                Regex rr = new Regex(@"\$\$|\$&|\$`|\$'|\$\d{1,2}");
                 var res = rr.Replace(newString, delegate(Match m) {
                     switch (m.Value) {
                         case "$$": return "$";
                         case "$&": return matched;
                         case "$`": return before;
                         case "$'": return after;
-                        default: int n = int.Parse(m.Value.Substring(1)); return n == 0 ? m.Value : groups[n].Value;
                     }
+                    int n = int.Parse(m.Value.Substring(1)); return n == 0 ? m.Value : groups[n].Value;
                 });
 
                 return res;

@@ -4,7 +4,6 @@ using System.Text;
 using Jint.Delegates;
 using Jint.Expressions;
 using System.Globalization;
-using System.Web;
 using System.Text.RegularExpressions;
 
 namespace Jint.Native {
@@ -85,10 +84,6 @@ namespace Jint.Native {
             this["decodeURIComponent"] = new JsFunctionWrapper(DecodeURIComponent, FunctionClass.PrototypeProperty);
             this["encodeURIComponent"] = new JsFunctionWrapper(EncodeURIComponent, FunctionClass.PrototypeProperty);
             #endregion
-
-            Marshaller = new Marshaller(this);
-            Marshaller.InitTypes();
-
         }
 
         public override string Class
@@ -330,10 +325,6 @@ namespace Jint.Native {
                 default:
                     throw new ArgumentNullException("value");
             }
-        }
-
-        public JsObject WrapClr(object value) {
-            return (JsObject)Marshaller.MarshalClrValue<object>(value);
         }
 
         public bool HasOption(Options options) {

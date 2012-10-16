@@ -363,23 +363,7 @@ namespace Jint {
             var dictionary = Result as JsDictionaryObject;
 
             if (Result.Value is IEnumerable) {
-                foreach (object value in (IEnumerable)Result.Value) {
-                    CurrentScope[identifier] = Global.WrapClr(value);
-
-                    statement.Statement.Accept(this);
-
-                    ResetContinueIfPresent(statement.Label);
-
-                    if (StopStatementFlow()) {
-                        if (breakStatement != null && statement.Label == breakStatement.Label) {
-                            breakStatement = null;
-                        }
-
-                        return;
-                    }
-
-                    ResetContinueIfPresent(statement.Label);
-                }
+                throw new NotSupportedException();
             }
             else if (dictionary != null) {
                 List<string> keys = new List<string>(dictionary.GetKeys());
@@ -668,28 +652,7 @@ namespace Jint {
 
             if (Result == JsUndefined.Instance && typeFullname.Length > 0 && expression.Generics.Count > 0)
             {
-                string typeName = typeFullname.ToString();
-                typeFullname = new StringBuilder();
-
-                var genericParameters = new Type[expression.Generics.Count];
-
-                try
-                {
-                    int i = 0;
-                    foreach (Expression generic in expression.Generics)
-                    {
-                        generic.Accept(this);
-                        genericParameters[i] = Global.Marshaller.MarshalJsValue<Type>(Result);
-                        i++;
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new JintException("A type parameter is required", e);
-                }
-
-                typeName += "`" + genericParameters.Length;
-                Result = Global.Marshaller.MarshalClrValue<Type>(typeResolver.ResolveType(typeName).MakeGenericType(genericParameters));
+                throw new NotSupportedException();
             }
 
             if (Result != null && Result is JsFunction) {
@@ -1213,14 +1176,7 @@ namespace Jint {
 
             // Try to evaluate a CLR type
             if (Result == JsUndefined.Instance && typeFullname.Length > 0) {
-                EnsureClrAllowed();
-
-                Type type = typeResolver.ResolveType(typeFullname.ToString());
-
-                if (type != null) {
-                    Result = Global.WrapClr(type);
-                    typeFullname = new StringBuilder();
-                }
+                throw new NotSupportedException();
             }
         }
 
