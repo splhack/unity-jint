@@ -1,0 +1,7 @@
+var str = "Hello";
+
+str += " World";
+
+log(str);
+
+log(add(2, 3));
