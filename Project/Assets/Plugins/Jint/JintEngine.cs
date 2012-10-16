@@ -15,6 +15,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Jint.Delegates {
     public delegate void Action();
+    public delegate void Action<T>(T t);
     public delegate void Action<T1, T2>(T1 t1, T2 t2);
     public delegate void Action<T1, T2, T3>(T1 t1, T2 t2, T3 t3);
 
