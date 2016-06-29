@@ -519,7 +519,7 @@ namespace Jint {
                     }
                 }
 
-                if (breakStatement != null) {
+                if (exit || breakStatement != null) {
                     breakStatement = null;
                     break;
                 }
