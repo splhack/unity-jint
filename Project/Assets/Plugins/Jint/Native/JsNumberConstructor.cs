@@ -16,8 +16,8 @@ namespace Jint.Native {
             this.DefineOwnProperty("MAX_VALUE", New(Double.MaxValue));
             this.DefineOwnProperty("MIN_VALUE", New(Double.MinValue));
             this.DefineOwnProperty("NaN", New(Double.NaN));
-            this.DefineOwnProperty("NEGATIVE_INFINITY", New(Double.PositiveInfinity));
-            this.DefineOwnProperty("POSITIVE_INFINITY", New(Double.NegativeInfinity));
+            this.DefineOwnProperty("POSITIVE_INFINITY", New(Double.PositiveInfinity));
+            this.DefineOwnProperty("NEGATIVE_INFINITY", New(Double.NegativeInfinity));
         }
 
         public override void InitPrototype(IGlobal global) {
