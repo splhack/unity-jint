@@ -1131,7 +1131,7 @@ namespace Jint {
 
                 case UnaryExpressionType.Void:
 
-                    expression.Accept(this);
+                    expression.Expression.Accept(this);
                     Result = JsUndefined.Instance;
                     break;
 
