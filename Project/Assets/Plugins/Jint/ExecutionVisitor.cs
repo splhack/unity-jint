@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Jint.Expressions;
@@ -343,15 +343,15 @@ namespace Jint {
 
         public void Visit(ForEachInStatement statement) {
             // todo: may be declare own property in the current scope if not a globalDeclaration?
-            bool globalDeclaration = true;
-            string identifier = String.Empty;
+            //bool globalDeclaration = true;
+            var identifier = string.Empty;
 
             if (statement.InitialisationStatement is VariableDeclarationStatement) {
-                globalDeclaration = ((VariableDeclarationStatement)statement.InitialisationStatement).Global;
+                //globalDeclaration = ((VariableDeclarationStatement)statement.InitialisationStatement).Global;
                 identifier = ((VariableDeclarationStatement)statement.InitialisationStatement).Identifier;
             }
             else if (statement.InitialisationStatement is Identifier) {
-                globalDeclaration = true;
+                //globalDeclaration = true;
                 identifier = ((Identifier)statement.InitialisationStatement).Text;
             }
             else {
@@ -542,6 +542,7 @@ namespace Jint {
                 statement.Expression.Accept(this);
             }
 
+            UnityEngine.Debug.LogError(Result.Value.ToString());
             throw new JsException(Result);
         }
 
@@ -1131,7 +1132,7 @@ namespace Jint {
 
                 case UnaryExpressionType.Void:
 
-                    expression.Accept(this);
+                    expression.Expression.Accept(this);
                     Result = JsUndefined.Instance;
                     break;
 
@@ -1449,25 +1450,23 @@ namespace Jint {
 
             string propertyName = lastIdentifier = expression.Text;
 
-            JsInstance result = null;
-            if (CurrentScope.TryGetProperty(propertyName, out result)) {
-                Result = result;
-                if (Result != null)
-                    return;
-            }
-
-            if (propertyName == "null") {
+            if (propertyName == "null")
+            {
                 Result = JsNull.Instance;
+                return;
             }
 
-            if (propertyName == "undefined") {
+            if (propertyName == "undefined")
+            {
                 Result = JsUndefined.Instance;
+                return;
             }
 
-            // Try to record full path in case it's a type
-            if (Result == null) {
-                typeFullname.Append(propertyName);
-            }
+            JsInstance result = null;
+            CurrentScope.TryGetProperty(propertyName, out result);
+            Result = result;
+
+            return;
         }
 
         private void EnsureClrAllowed() {
@@ -1507,7 +1506,7 @@ namespace Jint {
             var array = Global.ArrayClass.New();
 
             // Process parameters
-            JsInstance[] parameters = new JsInstance[expression.Parameters.Count];
+            //JsInstance[] parameters = new JsInstance[expression.Parameters.Count];
 
             for (int i = 0; i < expression.Parameters.Count; i++) {
                 expression.Parameters[i].Accept(this);
